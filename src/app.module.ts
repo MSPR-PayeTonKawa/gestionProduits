@@ -1,13 +1,21 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
+import { Product } from './products/entities/product.entity';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/productdb'),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'your_username',
+      password: 'your_password',
+      database: 'your_database',
+      entities: [Product],
+      synchronize: true, // Set to false in production
+    }),
     ProductsModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
