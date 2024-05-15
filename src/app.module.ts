@@ -9,9 +9,9 @@ import { Product } from './products/entities/product.entity';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'your_username',
-      password: 'your_password',
-      database: 'your_database',
+      username: 'max',
+      password: 'max',
+      database: 'max',
       entities: [Product],
       synchronize: true, // Set to false in production
     }),
