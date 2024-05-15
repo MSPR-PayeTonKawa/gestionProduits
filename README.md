@@ -1,73 +1,146 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 📦 Product Management API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Welcome to the Product Management API! This API is built with NestJS, Mongoose, and MongoDB. It allows you to manage products with CRUD operations.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## ✨ Features
 
-## Description
+- 🆕 **Create a Product**: Add a new product with details like name, price, description, category, and stock.
+- 📋 **Get All Products**: Retrieve a list of all products.
+- 🔍 **Get a Product by ID**: Retrieve details of a specific product by its ID.
+- ✏️ **Update a Product**: Update details of an existing product.
+- 🗑️ **Delete a Product**: Remove a product from the database.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🛠️ Prerequisites
 
-## Installation
+- Node.js (>= 12.x)
+- npm (>= 6.x)
+- MongoDB (Local installation or MongoDB Atlas)
 
-```bash
-$ npm install
-```
+## 🚀 Getting Started
 
-## Running the app
+### 📥 Installation
 
-```bash
-# development
-$ npm run start
+1. **Clone the repository**:
 
-# watch mode
-$ npm run start:dev
+    ```sh
+    git clone https://github.com/your-username/product-management-api.git
+    cd product-management-api
+    ```
 
-# production mode
-$ npm run start:prod
-```
+2. **Install dependencies**:
 
-## Test
+    ```sh
+    npm install
+    ```
 
-```bash
-# unit tests
-$ npm run test
+3. **Set up MongoDB**:
 
-# e2e tests
-$ npm run test:e2e
+    - For a local MongoDB setup, make sure MongoDB is running on your machine.
+    - For MongoDB Atlas, get your connection string from the Atlas dashboard.
 
-# test coverage
-$ npm run test:cov
-```
+4. **Configure the database connection**:
 
-## Support
+    In `src/app.module.ts`, update the MongoDB connection string in `MongooseModule.forRoot`:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+    ```typescript
+    MongooseModule.forRoot('mongodb://localhost:27017/productdb', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }),
+    // Or use your MongoDB Atlas connection string:
+    // MongooseModule.forRoot('your-mongodb-atlas-connection-string', {
+    //   useNewUrlParser: true,
+    //   useUnifiedTopology: true,
+    // }),
+    ```
 
-## Stay in touch
+### 🏃 Running the Application
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+1. **Start the server**:
 
-## License
+    ```sh
+    npm run start
+    ```
 
-Nest is [MIT licensed](LICENSE).
+    The server will start on `http://localhost:3000`.
+
+2. **Access the API documentation**:
+
+    Open your browser and go to `http://localhost:3000/api` to view the Swagger documentation for the API.
+
+### 🧪 Testing
+
+1. **Run unit tests**:
+
+    ```sh
+    npm run test
+    ```
+
+2. **Run end-to-end tests**:
+
+    ```sh
+    npm run test:e2e
+    ```
+
+3. **Run test coverage**:
+
+    ```sh
+    npm run test:cov
+    ```
+
+## 📚 API Endpoints
+
+### ➕ Create a Product
+
+- **URL**: `/products`
+- **Method**: `POST`
+- **Body** (raw, JSON):
+
+    ```json
+    {
+      "name": "Test Product",
+      "price": 100,
+      "description": "Test Description",
+      "category": "Test Category",
+      "stock": 10
+    }
+    ```
+
+### 📋 Get All Products
+
+- **URL**: `/products`
+- **Method**: `GET`
+
+### 🔍 Get a Product by ID
+
+- **URL**: `/products/:id`
+- **Method**: `GET`
+
+### ✏️ Update a Product
+
+- **URL**: `/products/:id`
+- **Method**: `PUT`
+- **Body** (raw, JSON):
+
+    ```json
+    {
+      "name": "Updated Product",
+      "price": 150,
+      "description": "Updated Description",
+      "category": "Updated Category",
+      "stock": 20
+    }
+    ```
+
+### 🗑️ Delete a Product
+
+- **URL**: `/products/:id`
+- **Method**: `DELETE`
+
+## 📜 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Made with ❤️ by [Your Name](https://github.com/AkaTordu)
