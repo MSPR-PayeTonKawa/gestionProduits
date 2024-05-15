@@ -28,6 +28,7 @@
     "@nestjs/typeorm": "^10.0.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "dos2unix": "^1.1.2",
     "dotenv": "^16.4.5",
     "mongoose": "^8.3.4",
     "pg": "^8.11.5",

@@ -1,12 +1,13 @@
 #!/bin/sh
+npm install -g @nestjs/cli
+npm install
 
-npm i -g @nestjs/cli
-npm i
+# Vérifier l'installation et démarrer PostgreSQL (si ce n'est pas déjà fait)
+if ! service postgresql status >/dev/null 2>&1; then
+    service postgresql start
+fi
 
-# start postgres
-service postgresql start
-
-# create user on postgres db
+# Créer un utilisateur dans la base de données PostgreSQL
 psql -U postgres -c "CREATE USER $POSTGRES_USER WITH PASSWORD '$POSTGRES_PASSWORD';"
 psql -U postgres -c "ALTER USER $POSTGRES_USER WITH SUPERUSER;"
 psql -U postgres -c "CREATE DATABASE $POSTGRES_DB OWNER $POSTGRES_USER;"
