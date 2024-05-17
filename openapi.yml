@@ -1,0 +1,99 @@
+openapi: 3.0.0
+info:
+  title: Gestion Produits API
+  description: API pour la gestion des produits
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Serveur local
+
+paths:
+  /products:
+    get:
+      summary: Liste des produits
+      description: Récupérer la liste de tous les produits
+      responses:
+        '200':
+          description: Liste des produits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Ajouter un nouveau produit
+      description: Ajouter un produit à la base de données
+      requestBody:
+        description: Détails du nouveau produit
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Produit créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /products/{productId}:
+    get:
+      summary: Récupérer un produit
+      description: Récupérer un produit par son ID
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: ID du produit
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Détails du produit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Produit non trouvé
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID du produit
+        name:
+          type: string
+          description: Nom du produit
+        description:
+          type: string
+          description: Description du produit
+        price:
+          type: number
+          format: float
+          description: Prix du produit
+      required:
+        - id
+        - name
+        - price
+    ProductInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nom du produit
+        description:
+          type: string
+          description: Description du produit
+        price:
+          type: number
+          format: float
+          description: Prix du produit
+      required:
+        - name
+        - price
