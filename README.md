@@ -1,146 +1,118 @@
 # 📦 Product Management API
 
-Welcome to the Product Management API! This API is built with NestJS, Mongoose, and MongoDB. It allows you to manage products with CRUD operations.
+![NestJS](https://img.shields.io/badge/NestJS-7E1E9C?style=for-the-badge&logo=nestjs&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
-## ✨ Features
+Gestion Produits est une application permettant de gérer des produits, construite avec NestJS et PostgreSQL.
 
-- 🆕 **Create a Product**: Add a new product with details like name, price, description, category, and stock.
-- 📋 **Get All Products**: Retrieve a list of all products.
-- 🔍 **Get a Product by ID**: Retrieve details of a specific product by its ID.
-- ✏️ **Update a Product**: Update details of an existing product.
-- 🗑️ **Delete a Product**: Remove a product from the database.
+## 🚀 Fonctionnalités
 
-## 🛠️ Prerequisites
+- Ajouter, modifier et supprimer des produits
+- Lister les produits
+- Recherche de produits par nom ou catégorie
+- Authentification et autorisation des utilisateurs
 
-- Node.js (>= 12.x)
-- npm (>= 6.x)
-- MongoDB (Local installation or MongoDB Atlas)
+## 🛠️ Prérequis
 
-## 🚀 Getting Started
+- Docker
+- Visual Studio Code avec l'extension Remote - Containers
+- Un fichier `.env` configuré avec les variables nécessaires :
 
-### 📥 Installation
+```env
+POSTGRES_USER=your_postgres_user
+POSTGRES_PASSWORD=your_postgres_password
+POSTGRES_DB=your_postgres_db
+```
 
-1. **Clone the repository**:
+## 🐳 Configuration du Conteneur de Développement
 
-    ```sh
-    git clone https://github.com/your-username/product-management-api.git
-    cd product-management-api
-    ```
+1. **Installer Docker**: [Get Docker](https://www.docker.com/get-started)
+2. **Installer l'extension Remote - Containers**: [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-2. **Install dependencies**:
+## 📦 Installation
 
-    ```sh
-    npm install
-    ```
+Clonez le repository et ouvrez-le dans Visual Studio Code.
 
-3. **Set up MongoDB**:
+```sh
+git clone https://github.com/MSPR-PayeTonKawa/gestionProduits.git
+cd api-gestion-produits
+```
 
-    - For a local MongoDB setup, make sure MongoDB is running on your machine.
-    - For MongoDB Atlas, get your connection string from the Atlas dashboard.
+Ouvrez le projet dans Visual Studio Code.
 
-4. **Configure the database connection**:
+```sh
+code .
+```
 
-    In `src/app.module.ts`, update the MongoDB connection string in `MongooseModule.forRoot`:
+Ouvrez la palette de commandes (Ctrl+Shift+P) et sélectionnez `Remote-Containers: Reopen in Container`.
 
-    ```typescript
-    MongooseModule.forRoot('mongodb://localhost:27017/productdb', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }),
-    // Or use your MongoDB Atlas connection string:
-    // MongooseModule.forRoot('your-mongodb-atlas-connection-string', {
-    //   useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    // }),
-    ```
+## 📜 Scripts
 
-### 🏃 Running the Application
+### `.devcontainer/setup.sh`
 
-1. **Start the server**:
+```sh
+#!/bin/bash
 
-    ```sh
-    npm run start
-    ```
+# Update package lists
+apt-get update
 
-    The server will start on `http://localhost:3000`.
+# Install PostgreSQL
+apt-get install -y postgresql postgresql-contrib
 
-2. **Access the API documentation**:
+# Install NestJS CLI globally
+npm install -g @nestjs/cli
 
-    Open your browser and go to `http://localhost:3000/api` to view the Swagger documentation for the API.
+# Install npm packages for the project
+npm install
 
-### 🧪 Testing
+# Start PostgreSQL service
+service postgresql start
 
-1. **Run unit tests**:
+# Create a PostgreSQL user and database
+sudo -u postgres psql -c "CREATE USER $POSTGRES_USER WITH PASSWORD '$POSTGRES_PASSWORD';"
+sudo -u postgres psql -c "ALTER USER $POSTGRES_USER WITH SUPERUSER;"
+sudo -u postgres psql -c "CREATE DATABASE $POSTGRES_DB OWNER $POSTGRES_USER;"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;"
+```
 
-    ```sh
-    npm run test
-    ```
+### `devcontainer.json`
 
-2. **Run end-to-end tests**:
+```json
+{
+  "name": "Gestion Produits",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye",
+  "forwardPorts": [5432, 3000],
+  "runArgs": ["--env-file", ".env"],
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "remoteUser": "root"
+}
+```
 
-    ```sh
-    npm run test:e2e
-    ```
+## 📖 Utilisation
 
-3. **Run test coverage**:
+Une fois que le conteneur est en cours d'exécution, vous pouvez lancer l'application avec :
 
-    ```sh
-    npm run test:cov
-    ```
+```sh
+npm run start:dev
+```
 
-## 📚 API Endpoints
+L'application sera disponible sur `http://localhost:3000`.
 
-### ➕ Create a Product
+## 🔧 Développement
 
-- **URL**: `/products`
-- **Method**: `POST`
-- **Body** (raw, JSON):
+Pour lancer les tests, utilisez :
 
-    ```json
-    {
-      "name": "Test Product",
-      "price": 100,
-      "description": "Test Description",
-      "category": "Test Category",
-      "stock": 10
-    }
-    ```
+```sh
+npm run test
+```
 
-### 📋 Get All Products
+Pour vérifier la couverture de test, utilisez :
 
-- **URL**: `/products`
-- **Method**: `GET`
-
-### 🔍 Get a Product by ID
-
-- **URL**: `/products/:id`
-- **Method**: `GET`
-
-### ✏️ Update a Product
-
-- **URL**: `/products/:id`
-- **Method**: `PUT`
-- **Body** (raw, JSON):
-
-    ```json
-    {
-      "name": "Updated Product",
-      "price": 150,
-      "description": "Updated Description",
-      "category": "Updated Category",
-      "stock": 20
-    }
-    ```
-
-### 🗑️ Delete a Product
-
-- **URL**: `/products/:id`
-- **Method**: `DELETE`
-
-## 📜 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```sh
+npm run test:cov
+```
 
 ---
 
-Made with ❤️ by [AkaTordu](https://github.com/AkaTordu)
+Fait avec ❤️ par [AkaTordu](https://github.com/AkaTordu)
