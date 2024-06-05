@@ -7,8 +7,9 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
-  db:
+      - db-produits
+
+  db-produits:
     container_name: db-produits
     image: postgres
     env_file:
