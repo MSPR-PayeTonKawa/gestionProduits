@@ -30,7 +30,10 @@ export class ProductsService {
   }
 
   async update(id: string, updateProductDto: UpdateProductDto): Promise<Product> {
-    await this.productRepository.update(id, updateProductDto);
+    const result = await this.productRepository.update(id, updateProductDto);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    }
     const updatedProduct = await this.productRepository.findOne({ where: { id } });
     if (!updatedProduct) {
       throw new NotFoundException(`Product with ID ${id} not found`);
