@@ -20,6 +20,8 @@ Gestion Produits est une application permettant de gérer des produits, construi
 - Un fichier `.env` configuré avec les variables nécessaires :
 
 ```env
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
 POSTGRES_USER=your_postgres_user
 POSTGRES_PASSWORD=your_postgres_password
 POSTGRES_DB=your_postgres_db
@@ -91,10 +93,11 @@ sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POST
 
 ## 📖 Utilisation
 
-Une fois que le conteneur est en cours d'exécution, vous pouvez lancer l'application avec :
+Vous pouvez lancer l'application avec :
 
 ```sh
-npm run start:dev
+docker compose  up db-produits  -d
+npm run start
 ```
 
 L'application sera disponible sur `http://localhost:3000`.
