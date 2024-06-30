@@ -10,7 +10,10 @@ export class CreateProductDto {
   @IsNumber()
   readonly price: number;
 
-  @ApiProperty({ description: 'The description of the product', required: false })
+  @ApiProperty({
+    description: 'The description of the product',
+    required: false,
+  })
   @IsString()
   @IsOptional()
   readonly description?: string;

@@ -45,7 +45,10 @@ describe('ProductsService', () => {
 
   describe('create', () => {
     it('should create and return a product', async () => {
-      const createProductDto: CreateProductDto = { name: 'Product', price: 100 };
+      const createProductDto: CreateProductDto = {
+        name: 'Product',
+        price: 100,
+      };
       const savedProduct = { id: '1', ...createProductDto };
 
       mockRepository.create.mockReturnValue(savedProduct);
@@ -73,35 +76,51 @@ describe('ProductsService', () => {
       mockRepository.findOne.mockResolvedValue(product);
 
       expect(await service.findOne('1')).toEqual(product);
-      expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(mockRepository.findOne).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
     });
 
     it('should throw a NotFoundException if product is not found', async () => {
       mockRepository.findOne.mockResolvedValue(null);
 
       await expect(service.findOne('1')).rejects.toThrow(NotFoundException);
-      expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(mockRepository.findOne).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
     });
   });
 
   describe('update', () => {
     it('should update and return a product', async () => {
-      const updateProductDto: UpdateProductDto = { name: 'Updated Product', price: 200 };
+      const updateProductDto: UpdateProductDto = {
+        name: 'Updated Product',
+        price: 200,
+      };
       const updatedProduct = { id: '1', ...updateProductDto };
 
       mockRepository.update.mockResolvedValue({ affected: 1 });
       mockRepository.findOne.mockResolvedValue(updatedProduct);
 
-      expect(await service.update('1', updateProductDto)).toEqual(updatedProduct);
+      expect(await service.update('1', updateProductDto)).toEqual(
+        updatedProduct,
+      );
       expect(mockRepository.update).toHaveBeenCalledWith('1', updateProductDto);
-      expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: '1' } });
+      expect(mockRepository.findOne).toHaveBeenCalledWith({
+        where: { id: '1' },
+      });
     });
 
     it('should throw a NotFoundException if product to update is not found', async () => {
       mockRepository.update.mockResolvedValue({ affected: 0 });
 
-      await expect(service.update('1', { name: 'Updated Product', price: 200 })).rejects.toThrow(NotFoundException);
-      expect(mockRepository.update).toHaveBeenCalledWith('1', { name: 'Updated Product', price: 200 });
+      await expect(
+        service.update('1', { name: 'Updated Product', price: 200 }),
+      ).rejects.toThrow(NotFoundException);
+      expect(mockRepository.update).toHaveBeenCalledWith('1', {
+        name: 'Updated Product',
+        price: 200,
+      });
     });
   });
 
