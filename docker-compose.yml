@@ -2,12 +2,10 @@ services:
   gestion-produits:
     container_name: gestion-produits
     build:
-      context: .
+      context: ../gestionProduits
       dockerfile: Dockerfile
-    ports:
-      - "8084:3000"
     env_file:
-      - .env
+      - ../gestionProduits/.env
     depends_on:
       - db-produits
     networks:
@@ -17,14 +15,14 @@ services:
     container_name: db-produits
     image: postgres
     env_file:
-      - .env
+      - ../gestionProduits/.env
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - db-produits-data:/var/lib/postgresql/data
     networks:
       - payetonkawa-n
 
 volumes:
-  db-data:
+  db-produits-data:
 
 networks:
   payetonkawa-n:
