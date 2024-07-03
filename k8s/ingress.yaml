@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gestion-produits-ingress
+  namespace: payetonkawa-prod
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.middlewares: payetonkawa-prod-auth-forward@kubernetescrd
+spec:
+  tls:
+    - hosts:
+        - produits-ptk.germainleignel.com
+      secretName: gestion-produits-tls
+  rules:
+    - host: produits-ptk.germainleignel.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gestion-produits-service
+                port:
+                  number: 80

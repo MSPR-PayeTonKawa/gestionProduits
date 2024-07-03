@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-produits-deployment
+  namespace: payetonkawa-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-produits
+  template:
+    metadata:
+      labels:
+        app: db-produits
+    spec:
+      containers:
+      - name: db-produits
+        image: postgres:latest
+        ports:
+        - containerPort: 5432
+        envFrom:
+        - secretRef:
+            name: gestion-produits-secrets
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
