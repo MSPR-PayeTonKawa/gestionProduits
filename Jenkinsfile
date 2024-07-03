@@ -1,14 +1,14 @@
 pipeline {
     agent {
         kubernetes {
-            label 'go-docker-agent'
+            label 'nodejs-docker-agent'
             yaml '''
             apiVersion: v1
             kind: Pod
             spec:
               containers:
-              - name: go
-                image: golang:1.22
+              - name: nodejs
+                image: node:20
                 command:
                 - cat
                 tty: true
@@ -52,11 +52,17 @@ pipeline {
                 }
             }
         }
+        stage('Install Dependencies') {
+            steps {
+                container('nodejs') {
+                    sh 'npm ci'
+                }
+            }
+        }
         stage('Test') {
             steps {
-                container('go') {
-                    // Running go test with verbosity
-                    sh 'go test ./... -v'
+                container('nodejs') {
+                    sh 'npm test'
                 }
             }
         }
@@ -75,7 +81,6 @@ pipeline {
                 container('docker') {
                     script {
                         def imageName = 'registry.germainleignel.com/paye-ton-kawa/gestion-produits:latest'
-                        // Corrected to prevent Groovy string interpolation
                         sh 'echo $HARBOR_PASSWORD | docker login registry.germainleignel.com --username $HARBOR_USERNAME --password-stdin'
                         sh "docker push ${imageName}"
                     }
@@ -96,8 +101,7 @@ pipeline {
     }
     post {
         always {
-            // Archive test results, logs, or any other artifacts if needed
-            archiveArtifacts artifacts: '**/test-results/*.xml', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'coverage/**/*', allowEmptyArchive: true
         }
         success {
             echo 'Tests ran successfully and image was built and pushed.'
